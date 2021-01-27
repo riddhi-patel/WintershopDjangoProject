@@ -1,0 +1,58 @@
+ <!DOCTYPE html>
+{% extends 'header.html' %}
+{% load static %}
+{%block content%}
+<html>
+<head>
+	<style type="text/css">
+	body{
+		background-image: url("{% static 'img/bg1.jpg'%}")
+	}
+</style>
+</head>
+<body>
+{% if carts %}
+	<center><h1>Total Item in Carts:{{carts.count}}</h1>
+			<h3>Total Amount to pay:{{total_amount}}</h3>
+			<form method="Post" action="{% url 'pay' %}">
+				{% csrf_token %}
+				<input type="hidden" name="amount" value="{{total_amount}}">
+				<input type="submit" value="Proceed To Pay" class="btn btn-danger">
+			</form></center>
+{% else %}
+	<center><h1>No Item in Cart</h1></center>
+{% endif %}
+<div class="row">
+	{% for i in carts %}
+	<div id="box" class="col-sm-3" style="margin-top: 10px;">
+		<div class="container">
+			<img src="{{i.product.product_image.url}}" class="card-img-top" alt="Card image" width="150px" height="150px">
+			<div class="card-body">
+				<p class="card-title">Product Name: {{i.product.product_name}}</p>
+				<p class="card-text">Product Price: {{i.product_price}}</p>
+				<form name="change_qty" method="POST" action="{% url 'change_qty'%}">
+					{% csrf_token %}
+					<input type="hidden" name="cart_id" value="{{i.id}}">
+					<p class="card-text">Product Quantity: <input type="number" name="qty" value="{{i.product_qty}}"min="1" max="10" onchange="this.form.submit();"></p>
+					
+				</form>
+				
+				<p class="card-text">Net Price: {{i.net_price}}</p>
+				<a href="{% url 'user_product_detail' pk=i.product.pk %}">
+					<input type="button" value="More Detail" class="btn btn-primary"></a>
+  			</div>
+  				
+  			</form>
+
+
+		</div>
+	</div>
+	{% endfor%}
+	
+</div>
+
+
+
+</body>
+</html>
+{% endblock %}

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+{% extends 'header.html' %}
+{% load static%}
+{%block content%}
+<html>
+<head>
+	<style type="text/css">
+	body{
+		background-image: url("{% static 'img/bg2.jpg'%}")
+	}
+</style>
+
+</head>
+<body>
+	<center>
+		<h1>Contact</h1>
+		{% if msg %}
+			<b style="color: red">{{msg}}</b>
+		{% endif %}
+		<form name="contact" method="post" action="{% url 'contact'%}">
+			{% csrf_token %}
+			<table>
+				<tr>
+					<td>Name</td>
+					<td><input type="text" name="name"></td>
+				</tr>
+				<tr>
+					<td>Email</td>
+					<td><input type="text" name="email"></td>
+				</tr>
+				<tr>
+					<td>Mobile</td>
+					<td><input type="text" name="mobile"></td>
+				</td>
+				<tr>
+					<td>Remarks</td>
+					<td><textarea cols="22" rows="5" name="remarks"></textarea> 
+				</tr>
+				<tr>
+					<td colspan="2" align="center"><input type="submit" value="submit" class="btn btn-primary"></td>
+				</tr>
+			</table>
+			
+		</form>
+		
+	</center>
+	<hr>
+	<h2>Recent Contacts</h2>
+	<hr>
+	{% for i in contacts %}
+		<p>Name:{{i.name}}</p>
+		<p>Remarks:{{i.remarks}}</p>
+	{% endfor %}
+</hr>
+
+</body>
+</html>
+{% endblock %}
